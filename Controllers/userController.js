@@ -1,15 +1,47 @@
 const User = require('../Models/user');
 const bcrypt = require('bcryptjs');
-const {addUserValidate, loginUserValidate} = require('./validateController')
-/* const jwt = require('jsonwebtoken'); */
+const { addUserValidate, loginUserValidate } = require('./validateController')
+const jwt = require('jsonwebtoken');
 
-/* const login = async (req, res, next) => {
-    const { email, password } = req.body
-} */
+const login = async (req, res, next) => {
+    const { error } = loginUserValidate(req.body);
+    if (error) {
+        return res.json({
+            success: false,
+            message: error.message
+        })
+    }
+
+    const selectedUser = await User.findOne({ email: req.body.email })
+    if (!selectedUser) {
+        return res.json({
+            succsess: false,
+            message: 'Incorrect email or password'
+        })
+    }
+
+    const verifiedUser = bcrypt.compareSync(req.body.password, selectedUser.password)
+    if (!verifiedUser) {
+        return res.json({
+            succsess: false,
+            message: 'Incorrect email or password'
+        })
+    }
+
+    const token = jwt.sign({ _id: selectedUser._id, admin: selectedUser.admin }, process.env.TOKEN_SECRET)
+
+    res.json({
+        success: true,
+        token: token
+    })
+
+
+
+}
 
 const addUser = async (req, res, next) => {
-    const {error} = addUserValidate(req.body);
-    if(error)
+    const { error } = addUserValidate(req.body);
+    if (error)
         return res.json({
             success: false,
             message: error.message
@@ -19,9 +51,9 @@ const addUser = async (req, res, next) => {
     if (selectedUser)
         res.json({
             success: false,
-            message: 'Email já cadastrado'
+            message: 'E-mail already registered'
         })
-    
+
     const docUser = new User({
         name: req.body.name,
         email: req.body.email,
@@ -34,16 +66,16 @@ const addUser = async (req, res, next) => {
         if (!err)
             res.json({
                 success: true,
-                message: 'Usuário registrado',
+                message: 'User registered',
                 data: result
             })
         else
             res.json({
                 success: false,
-                message: 'Usuário não registrado',
+                message: 'User not registered',
                 data: err.message
             })
     })
 }
 
-module.exports = { /* login, */ addUser };
+module.exports = { login, addUser };
