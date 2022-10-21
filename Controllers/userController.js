@@ -35,24 +35,24 @@ const login = async (req, res, next) => {
         token: token
     })
 
-
-
 }
 
 const addUser = async (req, res, next) => {
     const { error } = addUserValidate(req.body);
-    if (error)
+    if (error){
         return res.json({
             success: false,
             message: error.message
         })
+    }
 
     const selectedUser = await User.findOne({ email: req.body.email });
-    if (selectedUser)
-        res.json({
+    if (selectedUser){
+        return res.json({
             success: false,
             message: 'E-mail already registered'
         })
+    }
 
     const docUser = new User({
         name: req.body.name,
@@ -63,18 +63,19 @@ const addUser = async (req, res, next) => {
     });
 
     docUser.save((err, result) => {
-        if (!err)
+        if (!err){
             res.json({
                 success: true,
                 message: 'User registered',
                 data: result
             })
-        else
+        }else{
             res.json({
                 success: false,
                 message: 'User not registered',
                 data: err.message
             })
+        }
     })
 }
 
