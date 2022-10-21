@@ -37,6 +37,57 @@ const login = async (req, res, next) => {
 
 }
 
+const loadUser = async (req, res, next) => {
+    let id = req.body.id;
+
+    User.findById(id, (err, result) => {
+        if(!err){
+            res.json({
+                success: true,
+                data: result
+            })
+        }else{
+            res.json({
+                success: false,
+                message: 'User not found',
+                data: err.message
+            })
+        }
+    })
+}
+const editUser = (req, res, next) => {
+
+    let user = {}
+    user.name = req.body.name
+    user.email = req.body.email
+    user.sector = req.body.sector
+    user.password = req.body.password
+
+    const { error } = addUserValidate(user);
+    if (error){
+        return res.json({
+            success: false,
+            message: error.message
+        })
+    }
+
+    User.findByIdAndUpdate(req.body._id, user, (err, result) => {
+        if(!err){
+            res.json({
+                success: true,
+                message: 'User updated',
+                data: result
+            })
+        }else{
+            res.json({
+                success: false,
+                message: 'User not found',
+                data: err.message
+            })
+        }
+    })
+}
+
 const addUser = async (req, res, next) => {
     const { error } = addUserValidate(req.body);
     if (error){
@@ -79,4 +130,4 @@ const addUser = async (req, res, next) => {
     })
 }
 
-module.exports = { login, addUser };
+module.exports = { login, addUser, loadUser, editUser };
