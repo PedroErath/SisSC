@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require('mongoose');
 const userRoute = require('./Routes/userRoute')
 const adminRoute = require('./Routes/adminRoute')
+const authRoute = require('./Routes/authRoute')
 require('dotenv').config();
 
 /* Connection with mongoDB */
@@ -17,6 +18,8 @@ mongoose.connect(process.env.DATABASE).then(() => {
 app.use('/user', userRoute)
 /* pattern route for admin manipulation */
 app.use('/admin', adminRoute)
+/* pattern route for autentication */
+app.use('/auth', authRoute)
 
 /* starting server */
 app.listen(process.env.PORT, (error) => {

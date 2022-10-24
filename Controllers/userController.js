@@ -1,48 +1,10 @@
 /* Import */
 const User = require('../Models/user');
 const bcrypt = require('bcryptjs');
-const { addUserValidate, loginUserValidate, editUserValidate } = require('./validateController')
+const { addUserValidate, editUserValidate } = require('./validateController')
 const jwt = require('jsonwebtoken');
 
 /* Methods of user */
-const login = async (req, res, next) => {
-    /* Validation of inputs */
-    const { error } = loginUserValidate(req.body);
-    if (error) {
-        return res.json({
-            success: false,
-            message: error.message
-        })
-    }
-
-    /* Searching user */
-    const selectedUser = await User.findOne({ email: req.body.email })
-    if (!selectedUser) {
-        return res.json({
-            succsess: false,
-            message: 'Incorrect email or password'
-        })
-    }
-
-    /* Validation password */
-    const verifiedUser = bcrypt.compareSync(req.body.password, selectedUser.password)
-    if (!verifiedUser) {
-        return res.json({
-            succsess: false,
-            message: 'Incorrect email or password'
-        })
-    }
-
-    /* Generating token */
-    const token = jwt.sign({ _id: selectedUser._id, admin: selectedUser.admin }, process.env.TOKEN_SECRET)
-
-    res.json({
-        success: true,
-        token: token
-    })
-
-}
-
 const loadUser = async (req, res, next) => {
     let id = req.body.id;
     if(!id) return res.json({
@@ -51,20 +13,25 @@ const loadUser = async (req, res, next) => {
     })
 
     /* Searching user */
-    User.findById(id, (err, result) => {
-        if(!err){
-            res.json({
-                success: true,
-                data: result
-            })
-        }else{
+    try {
+        const doc = await User.findById(id);
+        if(!doc){
             res.json({
                 success: false,
                 message: 'User not found',
-                data: err.message
             })
         }
-    })
+        res.json({
+            success: true,
+            data: doc
+        })
+    } catch (error) {
+        res.json({
+            success: false,
+            message: 'User not found',
+            err: error.message
+        })
+    }
 }
 const editUser = (req, res, next) => {
     /* Geting inputs */
@@ -117,7 +84,7 @@ const addUser = async (req, res, next) => {
             message: 'E-mail already registered'
         })
     }
-                                    
+
     const docUser = new User({
         name: req.body.name,
         email: req.body.email,
@@ -145,4 +112,4 @@ const addUser = async (req, res, next) => {
 }
 
 /* exporting methods */
-module.exports = { login, addUser, loadUser, editUser };
+module.exports = { /* login, */ addUser, loadUser, editUser };

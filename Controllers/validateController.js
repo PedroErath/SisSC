@@ -8,7 +8,8 @@ const addUserValidate = (data) => {
         name: joi.string().required().min(2).max(50),
         email: joi.string().required().max(100),
         sector: joi.string().required().min(2).max(20),
-        password: joi.string().required().min(6).max(100)
+        password: joi.string().required().min(6).max(100),
+        admin: joi.boolean().default(false)
     })
 
     return schema.validate(data)
