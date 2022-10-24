@@ -1,5 +1,7 @@
+/* Imports */
 const mongoose = require('mongoose');
 
+/* Model user */
 const userSchema = new mongoose.Schema({
     name: {type:String, minLength:2, maxLength:50, required:true},
     email: {type:String, maxLength:100, required:true},
@@ -9,4 +11,5 @@ const userSchema = new mongoose.Schema({
     createdAt: {type:Date, default: Date.now()}
 })
 
+/* Exporting model */
 module.exports = mongoose.model('User', userSchema);

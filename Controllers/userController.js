@@ -1,12 +1,35 @@
 /* Import */
 const User = require('../Models/user');
 const bcrypt = require('bcryptjs');
-const { addUserValidate, editUserValidate } = require('./validateController')
-const jwt = require('jsonwebtoken');
+const { addUserValidate, editUserValidate } = require('./validateController');
+
+const listUsers = (req, res, next) => {
+    /* Searching user */
+    User.find({}, async (err, results) => {
+        try {
+            const docs = await User.find({});
+            if (!docs[0]) {
+                return res.json({
+                    success: false,
+                    message: 'No user found'
+                });
+            }
+            res.json({
+                success: true,
+                data: results
+            })
+        } catch (error) {
+            res.json({
+                success: false,
+                message: err.message
+            })
+        }
+    });
+};
 
 /* Methods of user */
 const loadUser = async (req, res, next) => {
-    let id = req.body.id;
+    let id = req.body.idUser;
     if(!id) return res.json({
         success: false,
         message: 'User not found',
@@ -16,7 +39,7 @@ const loadUser = async (req, res, next) => {
     try {
         const doc = await User.findById(id);
         if(!doc){
-            res.json({
+            return res.json({
                 success: false,
                 message: 'User not found',
             })
@@ -111,5 +134,28 @@ const addUser = async (req, res, next) => {
     })
 }
 
+const deleteUser = async (req, res, next) => {
+    let id = req.body.id
+    if (!id) return res.json({
+        success: false,
+        message: 'User not found',
+    })
+    /* Searching and delete user */
+    User.findByIdAndDelete(id, (err, result) => {
+        if (!err && result) {
+            return res.json({
+                success: true,
+                message: 'User deleted',
+                data: result
+            })
+        }
+        res.json({
+            success: false,
+            message: 'User not deleted',
+            data: err
+        })
+    })
+}
+
 /* exporting methods */
-module.exports = { /* login, */ addUser, loadUser, editUser };
+module.exports = { listUsers, addUser, loadUser, editUser, deleteUser };

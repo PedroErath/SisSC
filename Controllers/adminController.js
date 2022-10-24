@@ -1,9 +1,10 @@
-/* Importing model user */
+/* Importing model user
 const User = require('../Models/user');
 
-/* Admin methods */
+
+Admin methods
 const AllUsers = (req, res, next) => {
-    /* Searching user */
+    Searching user
     User.find({}, async (err, results) => {
         try {
             const docs = await User.find({});
@@ -32,7 +33,7 @@ const deleteUser = async (req, res, next) => {
         success: false,
         message: 'User not found',
     })
-    /* Searching and delete user */
+    Searching and delete user
     User.findByIdAndDelete(id, (err, result) => {
         if (!err && result) {
             return res.json({
@@ -49,5 +50,5 @@ const deleteUser = async (req, res, next) => {
     })
 }
 
-/* Exporting methods */
-module.exports = { AllUsers, deleteUser }
+Exporting methods
+module.exports = { AllUsers, deleteUser } */
