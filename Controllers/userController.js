@@ -1,6 +1,6 @@
 const User = require('../Models/user');
 const bcrypt = require('bcryptjs');
-const { addUserValidate, loginUserValidate } = require('./validateController')
+const { addUserValidate, loginUserValidate, editUserValidate } = require('./validateController')
 const jwt = require('jsonwebtoken');
 
 const login = async (req, res, next) => {
@@ -39,6 +39,10 @@ const login = async (req, res, next) => {
 
 const loadUser = async (req, res, next) => {
     let id = req.body.id;
+    if(!id) return res.json({
+        success: false,
+        message: 'User not found',
+    })
 
     User.findById(id, (err, result) => {
         if(!err){
@@ -61,9 +65,8 @@ const editUser = (req, res, next) => {
     user.name = req.body.name
     user.email = req.body.email
     user.sector = req.body.sector
-    user.password = req.body.password
 
-    const { error } = addUserValidate(user);
+    const { error } = editUserValidate(user);
     if (error){
         return res.json({
             success: false,
@@ -71,7 +74,7 @@ const editUser = (req, res, next) => {
         })
     }
 
-    User.findByIdAndUpdate(req.body._id, user, (err, result) => {
+    User.findByIdAndUpdate(req.body._id, user, {returnDocument:'after'} ,(err, result) => {
         if(!err){
             res.json({
                 success: true,

@@ -11,6 +11,16 @@ const addUserValidate = (data) => {
 
     return schema.validate(data)
 }
+const editUserValidate = (data) => {
+
+    const schema = joi.object({
+        name: joi.string().required().min(2).max(50),
+        email: joi.string().required().max(100),
+        sector: joi.string().required().min(2).max(20)
+    })
+
+    return schema.validate(data)
+}
 
 const loginUserValidate = (data) => {
 
@@ -22,4 +32,4 @@ const loginUserValidate = (data) => {
     return schema.validate(data)
 }
 
-module.exports = {addUserValidate, loginUserValidate}
+module.exports = {addUserValidate, loginUserValidate, editUserValidate}
