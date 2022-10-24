@@ -1,7 +1,7 @@
 /* Import */
 const User = require('../Models/user');
 const bcrypt = require('bcryptjs');
-const {loginUserValidate} = require('./validateController')
+const { loginUserValidate } = require('./validateController')
 const jwt = require('jsonwebtoken');
 require('../.env')
 
@@ -46,21 +46,19 @@ const login = async (req, res, next) => {
 }
 
 const verifyToken = (req, res, next) => {
-    if(!req.headers['authorization']){
-        res.json({
-            success: false,
-            message: 'token not found'
-        })
-    }
+    if (!req.headers['authorization']) return res.json({
+        success: false,
+        message: 'token not found'
+    })
 
     const token = req.headers['authorization'].split(' ')[1];
     jwt.verify(token, process.env.TOKEN_SECRET, (err, decode) => {
-        if(!err){
+        if (!err) {
             res.json({
-                success:true,
+                success: true,
                 data: decode
             })
-        }else{
+        } else {
             res.json({
                 success: false,
                 message: err.message
@@ -69,4 +67,4 @@ const verifyToken = (req, res, next) => {
     })
 }
 
-module.exports = {login, verifyToken}
+module.exports = { login, verifyToken }

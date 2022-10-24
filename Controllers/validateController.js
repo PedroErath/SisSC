@@ -1,7 +1,7 @@
 /* Import hapi/joi */
 const joi = require('@hapi/joi');
 
-/* Validation to add usder */
+/* Validation to add user */
 const addUserValidate = (data) => {
 
     const schema = joi.object({
@@ -14,7 +14,7 @@ const addUserValidate = (data) => {
 
     return schema.validate(data)
 }
-/* Validation to edit usder */
+/* Validation to edit user */
 const editUserValidate = (data) => {
 
     const schema = joi.object({
@@ -26,7 +26,7 @@ const editUserValidate = (data) => {
     return schema.validate(data)
 }
 
-/* Validation to login usder */
+/* Validation to login user */
 const loginUserValidate = (data) => {
 
     const schema = joi.object({
