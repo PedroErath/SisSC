@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const userRoute = require('./Routes/userRoute')
+const adminRoute = require('./Routes/adminRoute')
 require('dotenv').config();
 
 /* Connection with mongoDB */
@@ -14,6 +15,8 @@ mongoose.connect(process.env.DATABASE).then(() => {
 
 /* pattern route for user manipulation */
 app.use('/user', userRoute)
+/* pattern route for admin manipulation */
+app.use('/admin', adminRoute)
 
 /* starting server */
 app.listen(process.env.PORT, (error) => {
