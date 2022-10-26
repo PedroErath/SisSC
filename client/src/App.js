@@ -1,11 +1,13 @@
 import React from "react";
-import Login from './components/Login'
-import ListRequest from "./components/request/List";
+/* import Login from './components/Login'
+import ListRequest from "./components/request/List"; */
+import Home from "./components/Home";
+
 
 function App() {
   return (
     <div className="">
-        <ListRequest></ListRequest>
+        <Home/>
     </div>
   );
 }

@@ -3,8 +3,8 @@ import EditRequest from "./Edit";
 
 function ListRequest() {
     return (
-        <div className="container mt-5">
-            <div className="card mb-3" >
+        <div className="container">
+            <div className="card my-2" >
                 <div className="card-body d-flex flex-column flex-md-row justify-content-between">
                     <div className="col-md-9 text-center text-md-start">
                         <h4 className="card-title fw-bold">Pedro - TI</h4>
