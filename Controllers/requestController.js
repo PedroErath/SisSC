@@ -53,6 +53,7 @@ const editRequest = (req, res, next) => {
     const docRequest = {}
     docRequest.status = req.body.status
     docRequest.answer = req.body.answer
+    console.log(req.body)
 
     Request.findByIdAndUpdate(id, docRequest, { returnDocument: 'after' }, (err, result) => {
         if (!err) {

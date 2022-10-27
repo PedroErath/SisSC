@@ -23,9 +23,8 @@ client/node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-client/node_modules/.cache/.eslintcache
-client/node_modules/.cache/.eslintcache
-client/node_modules/.cache/.eslintcache
-client/node_modules/.cache/default-development/0.pack
-*.pack
-*.pack
+node_modules
+/node_modules
+client/node_modules
+client/node_modules/
+

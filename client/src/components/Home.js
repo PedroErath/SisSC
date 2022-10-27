@@ -1,6 +1,6 @@
 import React from "react";
-import ListRequest from "./request/List";
-import ListUser from "./user/List";
+import ListRequest from "./request/ListAndEdit";
+import ListUser from "./user/ListAndEdit";
 import AddRequest from "./request/Add";
 
 function Home() {
@@ -33,9 +33,9 @@ function Home() {
                     <AddRequest></AddRequest>
                 </div>
                 <div className='tab-content bg-warning p-3 rounded' id="pills-tabContent">
-                    <div className="tab-pane fade show active" id="pills-open-request" role="tabpanel" aria-labelledby="pills-open-request-tab" ><ListRequest></ListRequest></div>
-                    <div className="tab-pane fade" id="pills-pending-request" role="tabpanel" aria-labelledby="pills-pending-request-tab"></div>
-                    <div className="tab-pane fade" id="pills-finished-request" role="tabpanel" aria-labelledby="pills-finished-request-tab"></div>
+                    <div className="tab-pane fade show active" id="pills-open-request" role="tabpanel" aria-labelledby="pills-open-request-tab" ><ListRequest page="aberto" /></div>
+                    <div className="tab-pane fade" id="pills-pending-request" role="tabpanel" aria-labelledby="pills-pending-request-tab"><ListRequest page="pendente" /></div>
+                    <div className="tab-pane fade" id="pills-finished-request" role="tabpanel" aria-labelledby="pills-finished-request-tab"><ListRequest page="finalizado" /></div>
                     <div className="tab-pane fade" id="pills-user" role="tabpanel" aria-labelledby="pills-user-tab"><ListUser></ListUser></div>
                 </div>
             </div>
