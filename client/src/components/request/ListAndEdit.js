@@ -3,14 +3,15 @@ import React, { useEffect, useState } from "react";
 function ListRequest(props) {
 
     const [requests, setRequests] = useState([]);
-    const [requestUpdated, setRequestUpdated] = useState({status:"aberto"})
+    const [docUpdated, setDocUpdated] = useState({})
+    const [responseFetchEdit, setResponseFetchEdit] = useState({})
 
     useEffect(() => {
         fetch('http://localhost:3001/request/all')
             .then(response => response.json())
             .then(response => setRequests(response.data))
             .catch(err => console.error(err));
-    }, [])
+    }, [responseFetchEdit]);
 
     const ajustedDate = (date) => {
         let dateAjusted = new Date(date);
@@ -34,29 +35,45 @@ function ListRequest(props) {
         }
     }
 
-    const handleEditRequest = (e) => {
-        const { name, value } = e.target;
-
-        setRequestUpdated({ ...requestUpdated, [name]: value })
-        console.log(requestUpdated)
+    const handleAnswer = (answer) => {
+        if (answer) {
+            return (
+                <div>
+                    <p className="fw-bold me-1">Resposta TI:</p>
+                    <p>{answer}</p>
+                </div>
+            )
+        } else {
+            return
+        }
     }
 
-    const editRequest = (e, id) => {
+    const handleEdit = (e) => {
+        const { name, value } = e.target;
+
+        setDocUpdated({ ...docUpdated, [name]: value })
+    }
+
+    const Edit = (e, id) => {
         e.preventDefault()
 
         fetch('http://localhost:3001/request/edit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                id:id,
-                answer: requestUpdated.answer,
-                status: requestUpdated.status
+                id: id,
+                answer: docUpdated.answer,
+                status: docUpdated.status
             })
         })
             .then(response => response.json())
-            .then(response => console.log(response))
+            .then(response => {
+                setResponseFetchEdit(response)
+            })
             .catch(err => console.error(err));
     }
+
+
 
     /*     if (props.page === 'abertos') { */
     return (
@@ -70,6 +87,7 @@ function ListRequest(props) {
                                     <h4 className="card-title fw-bold">{request.user} - {request.sector}</h4>
                                     <h5 className="card-subtitle mb-2">{request.problem}</h5>
                                     <p className="card-text">{request.description}</p>
+                                    {handleAnswer(request.answer)}
                                 </div>
                                 <div className="d-flex flex-column text-center justify-content-center mt-2">
                                     <h4 className="card-title fw-bold">{ajustedDate(request.date)}</h4>
@@ -97,19 +115,19 @@ function ListRequest(props) {
                                                     {handlePriority(request.priority)}
                                                 </div>
                                             </div>
-                                            <form onSubmit={e => editRequest(e, request._id)}>
+                                            <form onSubmit={e => Edit(e, request._id)}>
                                                 <div className="d-flex flex-column flex-md-row justify-content-between">
                                                     <div className="col-md-6">
-                                                        <textarea onChange={e => handleEditRequest(e)} className="form-control mb-2" type="text" rows="3" name="answer" placeholder="Respostas" defaultValue={request.answer}></textarea>
-                                                        <select onChange={e => handleEditRequest(e)} name="status" className="form-select mb-2" defaultValue={request.status} required>
+                                                        <textarea onChange={e => handleEdit(e)} className="form-control mb-2" type="text" rows="3" name="answer" placeholder="Respostas" defaultValue={request.answer}></textarea>
+                                                        <select onChange={e => handleEdit(e)} name="status" className="form-select mb-2" defaultValue={request.status} required>
                                                             <option selected disabled value="" className="d-none">Status</option>
-                                                            <option  value="aberto">Aberto</option>
+                                                            <option value="aberto">Aberto</option>
                                                             <option value="pendente">Pendente</option>
                                                             <option value="finalizado">Finalizado</option>
                                                         </select>
                                                     </div>
                                                     <div className="d-flex align-items-end justify-content-center">
-                                                        <button type="submit" className="btn btn-primary">Salvar</button>
+                                                        <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
                                                         <button type="button " className="btn btn-danger ms-2">Excluir</button>
                                                         <button type="button" className="btn btn-secondary ms-2" data-bs-dismiss="modal">Fechar</button>
                                                     </div>
