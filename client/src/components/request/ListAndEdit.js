@@ -69,6 +69,7 @@ function ListRequest(props) {
             .then(response => response.json())
             .then(response => {
                 setResponseFetchEdit(response)
+                setDocUpdated({})
             })
             .catch(err => console.error(err));
     }
