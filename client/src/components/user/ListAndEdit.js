@@ -3,18 +3,50 @@ import React, { useState, useEffect } from "react";
 function ListUser() {
 
     const [users, setUsers] = useState([])
+    const [docUpdated, setDocUpdate] = useState({})
+    const [responseFetchEdit, setResponseFetchEdit] = useState({})
 
     useEffect(() => {
         fetch('http://localhost:3001/user/list')
             .then(response => response.json())
             .then(response => setUsers(response.data))
             .catch(err => console.error(err));
-    }, [])
+    }, [responseFetchEdit])
 
     const ajustedDate = (date) => {
         let dateAjusted = new Date(date);
         dateAjusted = dateAjusted.toLocaleDateString() + " - " + dateAjusted.toLocaleTimeString();
         return dateAjusted
+    }
+
+    const handleEdit = (e) => {
+        const { name, value } = e.target;
+
+        setDocUpdate({ ...docUpdated, [name]: value })
+        console.log(docUpdated)
+    }
+
+    const Edit = (e, id) => {
+        e.preventDefault()
+
+        fetch('http://localhost:3001/user/edit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: id,
+                name: docUpdated.name,
+                email: docUpdated.email,
+                sector: docUpdated.sector,
+                admin: docUpdated.admin
+            })
+        })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+                setResponseFetchEdit(response)
+                setDocUpdate({})
+            })
+            .catch(err => console.error(err));
     }
 
     return (
@@ -42,16 +74,16 @@ function ListUser() {
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div className="modal-body">
-                                        <form>
-                                            <input className="form-control mb-2" type="text" name="name" placeholder="Nome" defaultValue={user.name} required></input>
-                                            <input className="form-control mb-2" type="email" name="email" placeholder="Email" defaultValue={user.email} required></input>
-                                            <select className="form-select mb-2" name="sector" defaultValue={user.sector} required>
+                                        <form onSubmit={e => Edit(e, user._id)}>
+                                            <input onChange={e => handleEdit(e)} className="form-control mb-2" type="text" name="name" placeholder="Nome" defaultValue={user.name} required></input>
+                                            <input onChange={e => handleEdit(e)} className="form-control mb-2" type="email" name="email" placeholder="Email" defaultValue={user.email} required></input>
+                                            <select onChange={e => handleEdit(e)} className="form-select mb-2" name="sector" defaultValue={user.sector} required>
                                                 <option selected disabled value="" className="d-none">Setor</option>
                                                 <option value="ti">TI</option>
                                                 <option value="juridico">Juridico</option>
                                                 <option value="financeiro">Financeiro</option>
                                             </select>
-                                            <select className="form-select mb-2" name="admin" defaultValue={user.admin} required>
+                                            <select onChange={e => handleEdit(e)} className="form-select mb-2" name="admin" defaultValue={user.admin} required>
                                                 <option selected disabled value="" className="d-none">Permissão</option>
                                                 <option value="true">Admin</option>
                                                 <option value="false">Normal</option>

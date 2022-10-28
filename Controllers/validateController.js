@@ -18,9 +18,10 @@ const addUserValidate = (data) => {
 const editUserValidate = (data) => {
 
     const schema = joi.object({
-        name: joi.string().required().min(2).max(50),
-        email: joi.string().required().max(100),
-        sector: joi.string().required().min(2).max(20)
+        name: joi.string().min(2).max(50),
+        email: joi.string().max(100),
+        sector: joi.string().min(2).max(20),
+        admin: joi.boolean()
     })
 
     return schema.validate(data)

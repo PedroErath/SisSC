@@ -62,6 +62,7 @@ const editUser = (req, res, next) => {
     user.name = req.body.name
     user.email = req.body.email
     user.sector = req.body.sector
+    user.admin = req.body.admin
 
     /* Validation of inputs */
     const { error } = editUserValidate(user);
@@ -73,7 +74,7 @@ const editUser = (req, res, next) => {
     }
     
     /* Searching and update user */
-    User.findByIdAndUpdate(req.body._id, user, {returnDocument:'after'} ,(err, result) => {
+    User.findByIdAndUpdate(req.body.id, user, {returnDocument:'after'} ,(err, result) => {
         if(!err){
             res.json({
                 success: true,
