@@ -30,7 +30,7 @@ function Home() {
                         <button type="button" className="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#modalAddRequest" >Novo Chamado</button>
                         <button className="btn btn-danger" >Sair</button>
                     </div>
-                    <AddRequest></AddRequest>
+                    <AddRequest />
                 </div>
                 <div className='tab-content bg-warning p-3 rounded' id="pills-tabContent">
                     <div className="tab-pane fade show active" id="pills-open-request" role="tabpanel" aria-labelledby="pills-open-request-tab" ><ListRequest page="aberto" /></div>
