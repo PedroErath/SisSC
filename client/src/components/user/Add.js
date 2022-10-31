@@ -2,7 +2,7 @@ import React from "react";
 
 function AddUser() {
     return (
-        <div className="modal fade" id="modalAddUser" tabindex="-1" aria-labelledby="modalAddUserLabel" aria-hidden="true">
+        <div className="modal fade" id="modalAddUser" tabIndex="-1" aria-labelledby="modalAddUserLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content bg-warning">
                     <div className="d-flex align-items-center justify-content-between p-4">
