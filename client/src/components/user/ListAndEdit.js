@@ -89,7 +89,7 @@ function ListUser() {
                                                 <option value="false">Normal</option>
                                             </select>
                                             <div className="d-flex align-items-end justify-content-center">
-                                                <button className="btn btn-primary">Salvar</button>
+                                                <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
                                                 <button type="button" className="btn btn-danger ms-2">Excluir</button>
                                                 <button type="button" className="btn btn-secondary ms-2" data-bs-dismiss="modal">Fechar</button>
                                             </div>

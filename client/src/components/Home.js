@@ -4,6 +4,12 @@ import ListUser from "./user/ListAndEdit";
 import AddRequest from "./request/Add";
 
 function Home() {
+
+    const logOut = () => {
+        localStorage.clear()
+        window.location.assign("http://localhost:3000/")
+    }
+
     return (
         <div className="text-center mt-3 container">
             <h1 className="fw-bold display-1">SisSC</h1>
@@ -28,7 +34,7 @@ function Home() {
                     </div>
                     <div className="mb-2">
                         <button type="button" className="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#modalAddRequest" >Novo Chamado</button>
-                        <button className="btn btn-danger" >Sair</button>
+                        <button onClick={e => logOut()} className="btn btn-danger" >Sair</button>
                     </div>
                     <AddRequest />
                 </div>
