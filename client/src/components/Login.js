@@ -22,7 +22,13 @@ function Login() {
         })
             .then(response => response.json())
             .then(response => {
-                response.success ? localStorage.setItem('authorization', response.token) : showError(response.message)
+                if(response.success){
+                    localStorage.setItem('authorization', response.token)
+                    window.location.assign("http://localhost:3000/home");
+                }else{
+                    showError(response.message)
+                }
+                /* response.success ? localStorage.setItem('authorization', response.token) : showError(response.message) */
             })
             .catch(err => console.error(err));
     }

@@ -7,6 +7,7 @@ function Home() {
 
     const logOut = () => {
         localStorage.clear()
+        window.location.assign("http://localhost:3000/")
     }
 
     return (

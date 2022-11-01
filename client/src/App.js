@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Login from './components/Login';
 import Home from "./components/Home";
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+
 
 
 function App() {
@@ -16,17 +18,18 @@ function App() {
     })
       .then(response => response.json())
       .then(response => {
-        response.success ? setLogged(response) : setLogged({success: false})
+        response.success ? setLogged(response) : setLogged({ success: false })
       })
       .catch(err => console.error(err));
   }, [])
 
   return (
-    <div className="">
-      {
-        logged.success ? <Home /> : <Login />
-      }
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route exact path="/home" element={logged.success ? <Home /> : <Navigate to="/"/>} />
+        <Route path="*" element={logged.success ? <Navigate to="/home"/> : <Login />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

@@ -70,6 +70,7 @@ function ListRequest(props) {
             .then(response => {
                 setResponseFetchEdit(response)
                 setDocUpdated({})
+                window.location.assign("http://localhost:3000/home");
             })
             .catch(err => console.error(err));
     }
