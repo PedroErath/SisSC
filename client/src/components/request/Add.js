@@ -27,7 +27,7 @@ function AddRequest() {
     }
 
     return (
-        <div className="modal fade" id="modalAddRequest" tabindex="-1" aria-labelledby="modalAddRequestLabel" aria-hidden="true">
+        <div className="modal fade" id="modalAddRequest" tabIndex="-1" aria-labelledby="modalAddRequestLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content bg-warning">
                     <div className="d-flex align-items-center justify-content-between p-4">
