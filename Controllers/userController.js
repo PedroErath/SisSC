@@ -29,7 +29,7 @@ const listUsers = (req, res, next) => {
 
 /* Methods of user */
 const loadUser = async (req, res, next) => {
-    let id = req.body.idUser;
+    let id = req.body.id;
     if(!id) return res.json({
         success: false,
         message: 'User not found',
