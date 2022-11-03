@@ -1,7 +1,7 @@
 /* Import */
 const User = require('../Models/user');
 const bcrypt = require('bcryptjs');
-const { addUserValidate, editUserValidate } = require('./validateController');
+const { addUserValidate, editUserValidate, pwdReoveryValidate } = require('./validateController');
 
 const listUsers = (req, res, next) => {
     /* Searching user */
@@ -30,7 +30,7 @@ const listUsers = (req, res, next) => {
 /* Methods of user */
 const loadUser = async (req, res, next) => {
     let id = req.body.id;
-    if(!id) return res.json({
+    if (!id) return res.json({
         success: false,
         message: 'User not found',
     })
@@ -38,7 +38,7 @@ const loadUser = async (req, res, next) => {
     /* Searching user */
     try {
         const doc = await User.findById(id);
-        if(!doc){
+        if (!doc) {
             return res.json({
                 success: false,
                 message: 'User not found',
@@ -63,25 +63,26 @@ const editUser = (req, res, next) => {
     user.email = req.body.email
     user.sector = req.body.sector
     user.admin = req.body.admin
+    user.password = bcrypt.hashSync(req.body.password)
 
     /* Validation of inputs */
     const { error } = editUserValidate(user);
-    if (error){
+    if (error) {
         return res.json({
             success: false,
             message: error.message
         })
     }
-    
+
     /* Searching and update user */
-    User.findByIdAndUpdate(req.body.id, user, {returnDocument:'after'} ,(err, result) => {
-        if(!err){
+    User.findByIdAndUpdate(req.body.id, user, { returnDocument: 'after' }, (err, result) => {
+        if (!err) {
             res.json({
                 success: true,
                 message: 'User updated',
                 data: result
             })
-        }else{
+        } else {
             res.json({
                 success: false,
                 message: 'User not found',
@@ -91,18 +92,37 @@ const editUser = (req, res, next) => {
     })
 }
 
+const findUserbyEmail = (req, res, next) => {
+    console.log(req.body)
+    User.findOne({ email: req.body.email }, (err, result) => {
+        if (result) {
+            return res.json({
+                success: true,
+                message: 'Finded user',
+                data: result
+            })
+        } else {
+            return res.json({
+                success: false,
+                message: 'User not found',
+                err: err
+            })
+        }
+    })
+}
+
 const addUser = async (req, res, next) => {
     /* Validation of inputs */
     const { error } = addUserValidate(req.body);
-    if (error){
+    if (error) {
         return res.json({
             success: false,
             message: error.message
         })
     }
-     /* Searching user */
+    /* Searching user */
     const selectedUser = await User.findOne({ email: req.body.email });
-    if (selectedUser){
+    if (selectedUser) {
         return res.json({
             success: false,
             message: 'E-mail already registered'
@@ -119,13 +139,13 @@ const addUser = async (req, res, next) => {
 
     /* Adding user */
     docUser.save((err, result) => {
-        if (!err){
+        if (!err) {
             res.json({
                 success: true,
                 message: 'User registered',
                 data: result
             })
-        }else{
+        } else {
             res.json({
                 success: false,
                 message: 'User not registered',
@@ -159,4 +179,4 @@ const deleteUser = async (req, res, next) => {
 }
 
 /* exporting methods */
-module.exports = { listUsers, addUser, loadUser, editUser, deleteUser };
+module.exports = { listUsers, addUser, loadUser, editUser, deleteUser, findUserbyEmail };

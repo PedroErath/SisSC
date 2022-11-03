@@ -5,11 +5,23 @@ function ListRequest(props) {
     const [requests, setRequests] = useState([]);
     const [docUpdated, setDocUpdated] = useState({})
     const [responseFetchEdit, setResponseFetchEdit] = useState({})
+    const [admin, setAdmin] = useState({})
 
     useEffect(() => {
         fetch('http://localhost:3001/request/all')
             .then(response => response.json())
-            .then(response => setRequests(response.data))
+            .then(response => {
+                setRequests(response.data)
+                fetch('http://localhost:3001/auth/verifytoken', {
+                    method: 'GET',
+                    headers: {
+                        authorization: `Bearer ${localStorage.getItem('authorization')}`
+                    }
+                })
+                    .then(response => response.json())
+                    .then(response => setAdmin(response.data.admin))
+                    .catch(err => console.error(err));
+            })
             .catch(err => console.error(err));
     }, [responseFetchEdit]);
 
@@ -55,39 +67,42 @@ function ListRequest(props) {
     }
 
     const Edit = (e, id) => {
-        e.preventDefault()
+        if (admin) {
+            e.preventDefault()
 
-        fetch('http://localhost:3001/request/edit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                id: id,
-                answer: docUpdated.answer,
-                status: docUpdated.status
+            fetch('http://localhost:3001/request/edit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: id,
+                    answer: docUpdated.answer,
+                    status: docUpdated.status
+                })
             })
-        })
-            .then(response => response.json())
-            .then(response => {
-                setResponseFetchEdit(response)
-                setDocUpdated({})
-                window.location.assign("http://localhost:3000/home");
-            })
-            .catch(err => console.error(err));
+                .then(response => response.json())
+                .then(response => {
+                    setResponseFetchEdit(response)
+                    setDocUpdated({})
+                    window.location.assign("http://localhost:3000/home");
+                })
+                .catch(err => console.error(err));
+        }
     }
 
     const deleteRequest = (id) => {
-
-        fetch('http://localhost:3001/request/delete', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: id })
-        })
-            .then(response => response.json())
-            .then(response => {
-                console.log(response)
-                setResponseFetchEdit(response)
+        if (admin) {
+            fetch('http://localhost:3001/request/delete', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
             })
-            .catch(err => console.error(err));
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response)
+                    setResponseFetchEdit(response)
+                })
+                .catch(err => console.error(err));
+        }
     }
 
 
@@ -134,7 +149,7 @@ function ListRequest(props) {
                                             </div>
                                             <form onSubmit={e => Edit(e, request._id)}>
                                                 <div className="d-flex flex-column flex-md-row justify-content-between">
-                                                    <div className="col-md-6">
+                                                    {admin ? <div className="col-md-6">
                                                         <textarea onChange={e => handleEdit(e)} className="form-control mb-2" type="text" rows="3" name="answer" placeholder="Respostas" defaultValue={request.answer}></textarea>
                                                         <select onChange={e => handleEdit(e)} name="status" className="form-select mb-2" defaultValue={request.status} required>
                                                             <option selected disabled value="" className="d-none">Status</option>
@@ -142,10 +157,12 @@ function ListRequest(props) {
                                                             <option value="pendente">Pendente</option>
                                                             <option value="finalizado">Finalizado</option>
                                                         </select>
-                                                    </div>
+                                                    </div> : ''}
                                                     <div className="d-flex align-items-end justify-content-center">
-                                                        <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
-                                                        <button type="button " onClick={e => deleteRequest(request._id)} className="btn btn-danger ms-2" data-bs-dismiss="modal">Excluir</button>
+                                                        {admin ? <div>
+                                                            <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
+                                                            <button type="button " onClick={e => deleteRequest(request._id)} className="btn btn-danger ms-2" data-bs-dismiss="modal">Excluir</button>
+                                                        </div> : ''}
                                                         <button type="button" className="btn btn-secondary ms-2" data-bs-dismiss="modal">Fechar</button>
                                                     </div>
                                                 </div>

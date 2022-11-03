@@ -41,9 +41,11 @@ function AddUser() {
                             <input onChange={e => handleEdit(e)} className="form-control mb-2" type="email" name="email" placeholder="Email" required></input>
                             <select onChange={e => handleEdit(e)} name="sector" className="form-select mb-2" required>
                                 <option selected disabled value="" className="d-none">Setor</option>
-                                <option value="ti">TI</option>
-                                <option value="juridico">Juridico</option>
-                                <option value="financeiro">Financeiro</option>
+                                <option value="Ti">TI</option>
+                                <option value="Juridico">Juridico</option>
+                                <option value="Financeiro">Financeiro</option>
+                                <option value="Fabrica">Fabrica</option>
+                                <option value="RH">RH</option>
                             </select>
                             <input onChange={e => handleEdit(e)} className="form-control mb-2" type="password" name="password" placeholder="Senha" required></input>
                             <div className="d-flex justify-content-center">

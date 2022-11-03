@@ -54,7 +54,7 @@ return (
                     <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddUser">Cadastre-se</button>
                 </div>
             </form>
-            <a href="?">Esqueceu sua senha?</a>
+            <a href="/pwdrecovery">Esqueceu sua senha?</a>
         </div>
         <AddUser />
     </div>

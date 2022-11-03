@@ -21,7 +21,8 @@ const editUserValidate = (data) => {
         name: joi.string().min(2).max(50),
         email: joi.string().max(100),
         sector: joi.string().min(2).max(20),
-        admin: joi.boolean()
+        admin: joi.boolean(),
+        password: joi.string().required().min(6).max(100),
     })
 
     return schema.validate(data)

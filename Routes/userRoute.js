@@ -9,6 +9,7 @@ router.get('/list', userController.listUsers);
 router.post('/load', express.json(), userController.loadUser);
 router.post('/edit', express.json(), userController.editUser);
 router.post('/add', express.json(), userController.addUser);
+router.post('/pwdrecovery', express.json(), userController.findUserbyEmail);
 /* Delete routes */
 router.delete('/delete', express.json(), userController.deleteUser);
 
