@@ -75,6 +75,21 @@ function ListRequest(props) {
             .catch(err => console.error(err));
     }
 
+    const deleteRequest = (id) => {
+
+        fetch('http://localhost:3001/request/delete', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id })
+        })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+                setResponseFetchEdit(response)
+            })
+            .catch(err => console.error(err));
+    }
+
 
 
     /*     if (props.page === 'abertos') { */
@@ -130,7 +145,7 @@ function ListRequest(props) {
                                                     </div>
                                                     <div className="d-flex align-items-end justify-content-center">
                                                         <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
-                                                        <button type="button " className="btn btn-danger ms-2">Excluir</button>
+                                                        <button type="button " onClick={e => deleteRequest(request._id)} className="btn btn-danger ms-2" data-bs-dismiss="modal">Excluir</button>
                                                         <button type="button" className="btn btn-secondary ms-2" data-bs-dismiss="modal">Fechar</button>
                                                     </div>
                                                 </div>

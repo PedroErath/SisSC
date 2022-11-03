@@ -49,6 +49,21 @@ function ListUser() {
             .catch(err => console.error(err));
     }
 
+    const deleteUser = (id) => {
+
+        fetch('http://localhost:3001/user/delete', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id })
+        })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+                setResponseFetchEdit(response)
+            })
+            .catch(err => console.error(err));
+    }
+
     return (
         <div className="container">
             {users.map((user, index) => {
@@ -90,7 +105,7 @@ function ListUser() {
                                             </select>
                                             <div className="d-flex align-items-end justify-content-center">
                                                 <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Salvar</button>
-                                                <button type="button" className="btn btn-danger ms-2">Excluir</button>
+                                                <button type="button" onClick={e => deleteUser(user._id)} data-bs-dismiss="modal" className="btn btn-danger ms-2">Excluir</button>
                                                 <button type="button" className="btn btn-secondary ms-2" data-bs-dismiss="modal">Fechar</button>
                                             </div>
                                         </form>
