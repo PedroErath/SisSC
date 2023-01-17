@@ -4,6 +4,12 @@ Projeto de aplicação web para solicitação de chamados
 
 > Status: **Em desenvolvimento**
 
+**Usuário Normal**
+![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/92051142/212925512-b857c336-1e3f-4914-b3e5-6c46e269701b.gif)
+
+**Usuário Admin**
+![admin](https://user-images.githubusercontent.com/92051142/212925965-ecdefae5-f1b2-4130-9b81-e70d77cf3acc.gif)
+
 ## Techs:
 
 * [React](https://pt-br.reactjs.org/): Biblioteca Javascript Frontend;
@@ -16,6 +22,7 @@ Projeto de aplicação web para solicitação de chamados
 * **🔑 Recuperação de senha**
 * **⚙️ Filtro de resultados**
 * **💽 Registro de dados em banco de dados**
+* **👥 Dois níveis de usuário**
 
 
 ## Como executar
@@ -38,6 +45,10 @@ Projeto de aplicação web para solicitação de chamados
 ### **4. Executar o projeto**
 
 * Rode o servidor Node `npm start`
+
+### **5. Cadastre-se**
+
+* Você criará um bando de dados vazio, cadastre-se para utilizar o sistema.
 
 ## Probelmas encontrados
 
